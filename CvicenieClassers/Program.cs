@@ -15,14 +15,20 @@ class Program
         nasDruhyHrdina.Zdravie = 45;
         nasDruhyHrdina.Energia = 100;
 
-        int silaUtoku = 20;
-        while (nasPrvyHrdina.Zdravie > 0 && nasDruhyHrdina.Zdravie > 0)
+        Random randomizer = new Random();
+        int silaUtoku = randomizer.Next(10,30);
+        
+        while (!(nasPrvyHrdina.Zdravie == 0 || nasDruhyHrdina.Zdravie == 0))
         {
+            nasPrvyHrdina.Regeneruj();
+            nasDruhyHrdina.Regeneruj();
+            
             bool podarilSaUtok = nasPrvyHrdina.Utok(silaUtoku);
             if (podarilSaUtok)
             {
                 nasDruhyHrdina.PrijmiZranenie(silaUtoku);
                 Console.WriteLine(nasPrvyHrdina.Meno + " Trafil");
+                Console.WriteLine(nasDruhyHrdina.Meno + " ma uz len "+ nasDruhyHrdina.Zdravie +" zdravia.");
             }
             else
             {
@@ -34,13 +40,29 @@ class Program
             {
                 Console.WriteLine(nasDruhyHrdina.Meno + " Trafil");
                 nasPrvyHrdina.PrijmiZranenie(silaUtoku);
+                Console.WriteLine(nasPrvyHrdina.Meno + " ma uz len "+ nasPrvyHrdina.Zdravie +" zdravia.");
+
             }
             else
             {
                 Console.WriteLine(nasDruhyHrdina.Meno +" je unaveny");
             }
         }
-        
+
+        if (nasDruhyHrdina.Zdravie == 0 && nasPrvyHrdina.Zdravie == 0)
+        {
+            Console.WriteLine("Remiza!");
+        }
+        else if(nasPrvyHrdina.Zdravie == 0)
+        {
+            Console.WriteLine("Vyhral "+nasDruhyHrdina.Meno);
+        }
+        else if (nasDruhyHrdina.Zdravie == 0)
+        {
+            Console.WriteLine("Vyhral "+nasPrvyHrdina.Meno);
+        }
+
+
     }
 }
 
@@ -49,6 +71,11 @@ class Hrdina
     public string Meno = "";
     public int Zdravie = 100;
     public int Energia = 50;
+
+    public void Regeneruj()
+    {
+        Energia = Energia + 5;
+    }
 
     public int PrijmiZranenie(int sila)
     {
